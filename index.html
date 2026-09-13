@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Tor 中繼節點的即時運行狀態、頻寬歷史、上線率與共識權重。">
+<meta name="robots" content="index, follow">
+<title>Tor 中繼狀態</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🧅</text></svg>">
+</head>
+<body>
+
+<a class="skip" href="#main">跳到主要內容</a>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead-main">
+      <h1 id="relay-title">Tor 中繼</h1>
+      <div id="relay-status" class="statusline" aria-live="polite"></div>
+    </div>
+    <div class="masthead-tools">
+      <button id="theme-toggle" class="icon-btn" type="button">◐</button>
+      <button id="refresh" class="icon-btn" type="button" title="重新整理資料" aria-label="重新整理資料">⟳</button>
+    </div>
+  </header>
+
+  <div id="relay-switcher" class="switcher" hidden></div>
+  <div id="relay-ident" class="ident"></div>
+  <div id="relay-meta" class="meta"></div>
+  <div id="global-error"></div>
+
+  <main id="main">
+
+    <section class="section" aria-labelledby="h-kpi">
+      <h2 id="h-kpi" class="visually-hidden">重點數字</h2>
+      <div id="kpi" class="cards"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-flags">
+      <h2 id="h-flags">Flags<span class="h2-note">目錄權威給這個節點的角色標記</span></h2>
+      <div id="flags"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-bandwidth">
+      <h2 id="h-bandwidth">頻寬歷史<span class="h2-note">節點實際轉送的流量</span></h2>
+      <div id="bandwidth"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-uptime">
+      <h2 id="h-uptime">上線率<span class="h2-note">被目錄共識視為可用的比例</span></h2>
+      <div id="uptime"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-weights">
+      <h2 id="h-weights">共識權重與路徑機率<span class="h2-note">客戶端選中這個節點的機率</span></h2>
+      <div id="weights"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-details">
+      <h2 id="h-details">節點資訊</h2>
+      <div id="details"></div>
+    </section>
+
+    <section class="section" aria-labelledby="h-exitpolicy">
+      <h2 id="h-exitpolicy">Exit Policy<span class="h2-note">這個節點願意把流量送往哪裡</span></h2>
+      <div id="exitpolicy"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer"></footer>
+
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# 本機／工具產生的東西，不屬於網站
+.playwright-mcp/
+*.png
+node_modules/
+.wrangler/
+.DS_Store
+Thumbs.db
