@@ -31,7 +31,7 @@
 
 | 項目 | 決定 |
 |---|---|
-| 部署 | Cloudflare Pages，代理用 `_worker.js`（同網域） |
+| 部署 | Cloudflare Workers + Static Assets，代理與靜態檔同網域 |
 | 前端結構 | 零依賴、零 build，ES modules |
 | 圖表 | 手寫 SVG，不引入 CDN 依賴（訪客連不到外部 CDN 的風險與 onionoo 相同） |
 | 邊緣快取 | 統一 60 秒，寫成單一 `EDGE_TTL` 常數 |
@@ -41,11 +41,11 @@
 
 ## 架構
 
-    tor.info-sec.vip  (Cloudflare Pages)
+    tor.info-sec.vip  (Cloudflare Workers + Static Assets)
     |
-    +-- 靜態檔  index.html / style.css / config.js / js/*
+    +-- public/  index.html / style.css / config.js / js/*
     |
-    +-- _worker.js                            <- Pages advanced mode
+    +-- worker.js                             <- wrangler.jsonc 的 main
             |  同網域 /api/onionoo/details?lookup=...
             +--> fetch onionoo.torproject.org  (由 Cloudflare 邊緣發出)
 
@@ -53,10 +53,15 @@
 
 ## 代理層
 
-實作於 `_worker.js`。原先設計為 `functions/api/onionoo/[[path]].js`，
-但 Pages 的 `functions/` 目錄要靠建置流程編譯，直接上傳（拖曳）的專案不支援；
-改用 advanced mode 的 `_worker.js` 後兩種專案型態都能跑，且不需要建置。
-代價是 `_headers` 在 advanced mode 下不生效，安全標頭改由 worker 加在靜態檔回應上。
+實作於 `worker.js`。
+
+部署形態幾經修正，過程記錄於此以免重蹈覆轍：
+原先設計為 Pages Function（`functions/api/onionoo/[[path]].js`），
+但該目錄要靠建置流程編譯，直接上傳的 Pages 專案不支援；改為 Pages advanced mode
+的 `_worker.js`；最後由建置日誌確認**此站根本不是 Pages 而是 Workers + Static
+Assets**，`_worker.js` 在 Workers 沒有特殊意義，會被當成公開資產上傳而被 wrangler
+擋下。最終形態：`wrangler.jsonc` 以 `main` 指定 `worker.js`，靜態檔隔離在 `public/`，
+並以 `run_worker_first` 讓安全標頭能套用在靜態檔回應上。
 
 - 端點白名單：`details` `bandwidth` `uptime` `weights` `summary`，其餘 404
 - 參數白名單：`lookup` `fingerprint` `search` `fields` `limit` `offset` `order`
@@ -101,13 +106,14 @@ history 正規化為統一格式供圖表使用：
 
 ## 檔案結構
 
-    index.html
-    style.css
-    config.js
-    js/  api.js  format.js  chart.js  theme.js  ui.js  main.js
-         sections/ header.js kpi.js flags.js bandwidth.js
-                   uptime.js weights.js details.js exitpolicy.js
-    _worker.js
+    public/ index.html
+            style.css
+            config.js
+            js/  api.js  format.js  chart.js  theme.js  ui.js  main.js
+                 sections/ header.js kpi.js flags.js bandwidth.js
+                           uptime.js weights.js details.js exitpolicy.js
+    wrangler.jsonc
+    worker.js
     README.md
 
 ## 驗證

@@ -1,0 +1,25 @@
+{
+  // Worker 名稱必須沿用既有的，改名會變成另一個 Worker，
+  // 自訂網域 tor.info-sec.vip 就會跟著失聯。
+  "name": "onion",
+
+  // Worker 進入點。這是 Workers 的做法；
+  // Pages 那套「根目錄放 _worker.js 就會自動生效」在這裡不成立。
+  "main": "worker.js",
+
+  "compatibility_date": "2026-09-11",
+  "observability": { "enabled": true },
+
+  "assets": {
+    // 只上傳 public/。worker.js、README、docs 與 npx 裝出來的
+    // node_modules 都留在外面，不會被當成公開資產送上去。
+    "directory": "./public",
+
+    // 讓 worker.js 裡的 env.ASSETS.fetch() 拿得到靜態檔
+    "binding": "ASSETS",
+
+    // 每個請求都先進 Worker：/api/onionoo/* 自己處理，
+    // 其餘轉給 ASSETS 並補上安全標頭與 CSP。
+    "run_worker_first": true
+  }
+}

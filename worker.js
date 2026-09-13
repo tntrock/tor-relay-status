@@ -1,15 +1,14 @@
 /**
- * Cloudflare Pages advanced mode worker。
+ * Cloudflare Worker（Workers + Static Assets）。
  *
- * 放在部署根目錄的 `_worker.js` 會接管這個網站的所有請求，
- * 而且**不需要建置流程**，所以拖曳上傳（direct upload）的 Pages 專案也能用
- * —— `functions/` 目錄則只有接 Git、會跑建置的專案才會被編譯。
+ * 進入點由 wrangler.jsonc 的 `main` 指定，靜態檔放在 public/ 並由
+ * `assets.binding` 綁成 env.ASSETS。設定了 `run_worker_first`，
+ * 所以每個請求都會先進到這裡。
  *
  * 兩件事：
  *   1. /api/onionoo/*  由 Cloudflare 邊緣代為向 onionoo 取資料，
  *      訪客的電腦連不到 torproject.org 也沒關係。
- *   2. 其餘路徑交給 env.ASSETS 送靜態檔，並補上安全標頭
- *      （advanced mode 下 `_headers` 檔不會生效，所以在這裡設）。
+ *   2. 其餘路徑交給 env.ASSETS 送靜態檔，並補上安全標頭與 CSP。
  */
 
 const UPSTREAM = "https://onionoo.torproject.org";
