@@ -4,10 +4,10 @@ import { bps, num, pct, parseTime, fmtTime, relTime, duration } from "../format.
 import { el, kvTable, mono, monoList, errorBox } from "../ui.js";
 
 const VERSION_STATUS_ZH = {
-  recommended: "受推薦",
-  experimental: "實驗版",
-  obsolete: "已過時",
-  unrecommended: "不受推薦",
+  recommended: "recommended",
+  experimental: "experimental",
+  obsolete: "obsolete",
+  unrecommended: "unrecommended",
   "new in series": "新版本系列",
 };
 
@@ -111,18 +111,18 @@ export function renderDetails(host, view) {
   groups.push(
     group("頻寬與權重", [
       ["觀測頻寬", bps(r.observed_bandwidth)],
-      ["廣告頻寬", bps(r.advertised_bandwidth)],
+      ["宣告頻寬", bps(r.advertised_bandwidth)],
       ["設定上限 (Rate)", bps(r.bandwidth_rate)],
       ["設定上限 (Burst)", bps(r.bandwidth_burst)],
       [
         "是否經實測",
-        r.measured === true ? "是，由頻寬量測機構實測" : "否，採用節點自行回報值",
+        r.measured === true ? "True" : "False",
         "未經實測的節點權重會被限制，影響被選中的機率。",
       ],
       ["共識權重", num(r.consensus_weight)],
       ["權重佔全網", pct(r.consensus_weight_fraction, 6)],
       ["入口機率", pct(r.guard_probability, 6)],
-      ["中間機率", pct(r.middle_probability, 6)],
+      ["中繼機率", pct(r.middle_probability, 6)],
       ["出口機率", pct(r.exit_probability, 6)],
     ]),
   );
