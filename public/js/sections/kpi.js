@@ -39,12 +39,12 @@ export function renderKpi(host, view) {
     card({
       label: "觀測頻寬",
       value: bps(relay.observed_bandwidth),
-      sub: relay.measured === true ? "由頻寬量測機構實測" : "未經頻寬量測機構實測",
+      sub: relay.measured === true ? "True" : "False",
       tone: "accent",
       hint: "節點在過去一段時間內實際達到的持續吞吐量，取自節點自行回報的描述檔。",
     }),
     card({
-      label: "廣告頻寬",
+      label: "宣告頻寬",
       value: bps(relay.advertised_bandwidth),
       sub: "對外宣告可提供的頻寬",
       hint: "節點宣告願意提供的頻寬，等於設定上限與觀測頻寬中較小的那個。",
