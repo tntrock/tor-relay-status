@@ -29,10 +29,10 @@ const METRICS = [
   },
   {
     id: "middle_probability",
-    label: "中間機率",
+    label: "中繼機率",
     color: "var(--chart-4)",
     format: (v) => pct(v, 4),
-    hint: "選中這個節點作為中間跳點的機率。",
+    hint: "選中這個節點作為中繼節點的機率。",
   },
   {
     id: "exit_probability",
