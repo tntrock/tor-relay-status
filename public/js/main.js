@@ -99,8 +99,7 @@ function renderFooter() {
     el(
       "span",
       null,
-      "。本站透過 Cloudflare 邊緣代為取得資料，你的瀏覽器不會直接連線 torproject.org，" +
-        "因此即使你的網路封鎖了 Tor 官方網域，這個頁面仍能正常顯示。",
+      "。本站透過 Cloudflare 邊緣代為取得資料，你的瀏覽器不會直接連線 torproject.org",
     ),
   );
   nodes.footer.append(note);
